@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Money" Class="MoneyDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=ADMIN;Initial Catalog=Money;Persist Security Info=True;User ID=sa" SettingsObjectName="Social.Pinterest.Properties.Settings" SettingsPropertyName="MoneyConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ReachBoardPinterest" Member="ReachBoardPinterests">
+    <Type Name="ReachBoardPinterest">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Board" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Category" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="IsLoad" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Pinterest" Member="Pinterests">
+    <Type Name="Pinterest">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PinId" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Old_Id" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Board" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Backlink" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Note" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="Image_Url" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Type" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Is_Pin" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Created_Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Update_Date" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Pinterest_ProductPinterest" Member="ProductPinterests" ThisKey="Id" OtherKey="PinId" Type="ProductPinterest" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductPinterest" Member="ProductPinterests">
+    <Type Name="ProductPinterest">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PinId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ProductId" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Association Name="Pinterest_ProductPinterest" Member="Pinterest" ThisKey="PinId" OtherKey="Id" Type="Pinterest" IsForeignKey="true" />
+      <Association Name="Product_ProductPinterest" Member="Product" ThisKey="ProductId" OtherKey="Id" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductCategoryDetail" Member="ProductCategoryDetails">
+    <Type Name="ProductCategoryDetail">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Product_Id" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="Category_Id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Category_ProductCategoryDetail" Member="Category" ThisKey="Category_Id" OtherKey="Id" Type="Category" IsForeignKey="true" />
+      <Association Name="Product_ProductCategoryDetail" Member="Product" ThisKey="Product_Id" OtherKey="Id" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Category" Member="Categories">
+    <Type Name="Category">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Id_Source" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IsParent" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Parent_Id" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Category_ProductCategoryDetail" Member="ProductCategoryDetails" ThisKey="Id" OtherKey="Category_Id" Type="ProductCategoryDetail" />
+      <Association Name="Category_Category" Member="Categories" ThisKey="Id" OtherKey="Parent_Id" Type="Category" />
+      <Association Name="Category_Category" Member="Category1" ThisKey="Parent_Id" OtherKey="Id" Type="Category" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Products" Member="Products">
+    <Type Name="Product">
+      <Column Name="Id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Board" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="Source_Id" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="Group_Id" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="ProductType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Url_Name" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Url_Source" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="Image" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Association Name="Product_ProductPinterest" Member="ProductPinterests" ThisKey="Id" OtherKey="ProductId" Type="ProductPinterest" />
+      <Association Name="Product_ProductCategoryDetail" Member="ProductCategoryDetails" ThisKey="Id" OtherKey="Product_Id" Type="ProductCategoryDetail" />
+    </Type>
+  </Table>
+</Database>
